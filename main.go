@@ -6,6 +6,7 @@ package main
 
 import (
 	"log"
+	"microserviceAuthGO/src/api"
 	"microserviceAuthGO/src/db"
 	"microserviceAuthGO/src/rabbitmq"
 
@@ -24,6 +25,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	api.UserEndpointsMapping(e)
 	// Set up Echo middleware for logging and panic recovery
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -35,7 +37,7 @@ func main() {
 	rabbitmq.Init()
 
 	// Start the HTTP server on port 8080
-	if err := e.Start(":8080"); err != nil {
+	if err := e.Start(":8081"); err != nil {
 		// Close the database connection if the server fails to start
 		db.Close()
 		log.Fatalln(err)
